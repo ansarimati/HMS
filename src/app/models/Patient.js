@@ -139,35 +139,108 @@ const PatientSchema = new mongoose.Schema({
     }
   },
 
+  // medicalInfo: {
+  //   allergies: [{
+  //     type: String,
+  //     trim: true
+  //   }],
+  //   chronicConditions: [{
+  //     type: String,
+  //     trim: true
+  //   }],
+  //   currentMedications: [{
+  //     type: String,
+  //     trim: true
+  //   }],
+  //   surgeries: [{
+  //     type: String,
+  //     trim: true
+  //   }],
+  //   insuranceInfo: {
+  //     provider: {
+  //       type: String,
+  //       trim: true
+  //     },
+  //     policyNumber: {
+  //       type: String,
+  //       trim: true
+  //     },
+  //     groupNumber: {
+  //       type: String,
+  //       trim: true
+  //     },
+  //     validUntil: Date
+  //   }
+  // },
+
   medicalInfo: {
-    allergies: [{
-      type: String,
-      trim: true
-    }],
-    chronicConditions: [{
-      type: String,
-      trim: true
-    }],
-    currentMedications: [{
-      type: String,
-      trim: true
-    }],
-    insuranceInfo: {
-      provider: {
+  allergies: [
+    {
+      allergen: { type: String, required: true, trim: true },
+      reaction: { type: String, trim: true },
+      severity: {
         type: String,
-        trim: true
+        enum: ["Mild", "Moderate", "Severe", "Critical"],
       },
-      policyNumber: {
-        type: String,
-        trim: true
-      },
-      groupNumber: {
-        type: String,
-        trim: true
-      },
-      validUntil: Date
+      dateDiscovered: { type: Date },
+      status: { type: String, enum: ["Active", "Inactive"], default: "Active" }
     }
-  },
+  ],
+
+  medications: [
+    {
+      name: { type: String, required: true, trim: true },
+      dosage: { type: String, trim: true },
+      frequency: { type: String, trim: true },
+      prescribedBy: { type: String, trim: true },
+      startDate: { type: Date },
+      endDate: { type: Date },
+      status: { type: String, enum: ["Active", "Completed", "Discontinued"], default: "Active" },
+      purpose: { type: String, trim: true }
+    }
+  ],
+
+  diagnoses: [
+    {
+      condition: { type: String, required: true, trim: true },
+      diagnosedBy: { type: String, trim: true },
+      dateOfDiagnosis: { type: Date },
+      severity: { type: String, enum: ["Mild", "Moderate", "Severe", "Critical"] },
+      status: { type: String, enum: ["Active", "Resolved"], default: "Active" },
+      icd10: { type: String, trim: true },
+      notes: { type: String, trim: true }
+    }
+  ],
+
+  surgeries: [
+    {
+      procedure: { type: String, required: true, trim: true },
+      surgeon: { type: String, trim: true },
+      dateOfSurgery: { type: Date },
+      hospital: { type: String, trim: true },
+      complications: { type: String, trim: true },
+      notes: { type: String, trim: true }
+    }
+  ],
+
+  vitals: [
+    {
+      date: { type: Date, default: Date.now },
+      bloodPressure: { type: String, trim: true },
+      heartRate: { type: String, trim: true },
+      temperature: { type: String, trim: true },
+      weight: { type: String, trim: true },
+      height: { type: String, trim: true }
+    }
+  ],
+
+  insuranceInfo: {
+    provider: { type: String, trim: true },
+    policyNumber: { type: String, trim: true },
+    groupNumber: { type: String, trim: true },
+    validUntil: { type: Date }
+  }
+},
 
   registrationDate: {
     type: Date,
@@ -177,5 +250,5 @@ const PatientSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const Patient = mongoose.models.Patient || mongoose.model("Patient", PatientSchema);
+const Patient = mongoose.models?.Patient || mongoose.model("Patient", PatientSchema);
 export default Patient;

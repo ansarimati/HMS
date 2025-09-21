@@ -5,7 +5,7 @@
 
 import Patient from "@/app/models/Patient";
 import User from "@/app/models/User";
-import { generateToken } from "@/lib/auth";
+import { generateToken } from "@/lib/auth-server";
 import dbConnect from "@/lib/dbConnect";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
@@ -91,7 +91,7 @@ export async function POST (request) {
           personalInfo,
           contactInfo,
           emergencyContact,
-          medicalInfo: medicalInfo || {}
+          medicalInfo
         });
 
         await newPatient.save();

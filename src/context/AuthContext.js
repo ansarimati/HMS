@@ -2,7 +2,8 @@
 
 import { usePathname, useRouter } from "next/navigation";
 
-const { createContext, useState, useEffect, useContext, useCallback } = require("react");
+// const { createContext, useState, useEffect, useContext, useCallback } = require("react");
+import { createContext, useState, useEffect, useContext, useCallback } from "react";
 
 const AuthContext = createContext({});
 
